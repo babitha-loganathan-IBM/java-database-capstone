@@ -54,6 +54,8 @@
     </div>
   </div>
 
+  <!-- Load modals module early so window.openModal is available to selectRole -->
+  <script type="module" src="./js/components/modals.js"></script>
   <!-- Page-specific module script -->
   <script type="module" src="./js/services/index.js" defer></script>
 
