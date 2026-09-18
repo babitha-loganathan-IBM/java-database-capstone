@@ -19,8 +19,7 @@ async function initializePage() {
 
     patientId = Number(patient.id);
 
-    const appointmentData = await getPatientAppointments(patientId, token, "patient") || [];
-    allAppointments = appointmentData.filter(app => app.patientId === patientId);
+    allAppointments = await getPatientAppointments(patientId, token) || [];
 
     renderAppointments(allAppointments);
   } catch (error) {
@@ -94,7 +93,7 @@ async function handleFilterChange() {
   try {
     const response = await filterAppointments(condition, name, token);
     const appointments = response?.appointments || [];
-    filteredAppointments = appointments.filter(app => app.patientId === patientId);
+    filteredAppointments = appointments;
 
     renderAppointments(filteredAppointments);
   } catch (error) {
