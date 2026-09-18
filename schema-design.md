@@ -218,3 +218,108 @@ CALL GetDailyAppointmentReportByDoctor('2025-04-15');
 - `DATE(a.appointment_time)` extracts just the date portion from the `DATETIME` column to match against `report_date`.
 - Joins the `appointment`, `doctor`, and `patient` tables — all stored in MySQL and mapped to JPA entities [`Appointment.java`](app/src/main/java/com/project/back_end/models/Appointment.java), [`Doctor.java`](app/src/main/java/com/project/back_end/models/Doctor.java), and [`Patient.java`](app/src/main/java/com/project/back_end/models/Patient.java).
 - The complete terminal output from each procedure execution should be saved for assignment submission.
+
+---
+
+### Procedure: GetDoctorWithMostPatientsByMonth
+
+Finds the doctor who saw the most patients in a given month and year. Returns the `doctor_id` and the count of patients seen. Useful for monthly performance reviews and workload analysis.
+
+#### Definition
+
+```sql
+DELIMITER $
+
+CREATE PROCEDURE GetDoctorWithMostPatientsByMonth(
+    IN input_month INT, 
+    IN input_year INT
+)
+BEGIN
+    SELECT
+        doctor_id, 
+        COUNT(patient_id) AS patients_seen
+    FROM
+        appointment
+    WHERE
+        MONTH(appointment_time) = input_month 
+        AND YEAR(appointment_time) = input_year
+    GROUP BY
+        doctor_id
+    ORDER BY
+        patients_seen DESC
+    LIMIT 1;
+END $
+
+DELIMITER ;
+```
+
+#### Usage
+
+```sql
+CALL GetDoctorWithMostPatientsByMonth(4, 2025);
+```
+
+#### Output Columns
+
+| Column          | Description                                              |
+|-----------------|----------------------------------------------------------|
+| `doctor_id`     | The ID of the doctor with the highest patient count      |
+| `patients_seen` | Total number of appointments (patients seen) that month  |
+
+#### Notes
+- Accepts two `IN` parameters: `input_month` (1–12) and `input_year` (e.g., `2025`).
+- Uses `MONTH()` and `YEAR()` functions to filter appointments within the specified period.
+- `GROUP BY doctor_id` aggregates appointment counts per doctor; `ORDER BY patients_seen DESC LIMIT 1` returns only the top result.
+- Returns only `doctor_id` — join with the `doctor` table to retrieve the doctor's name if needed.
+
+---
+
+### Procedure: GetDoctorWithMostPatientsByYear
+
+Finds the doctor who saw the most patients across an entire year. Returns the `doctor_id` and total patients seen. Useful for annual performance reviews and resource planning.
+
+#### Definition
+
+```sql
+DELIMITER $
+
+CREATE PROCEDURE GetDoctorWithMostPatientsByYear(
+    IN input_year INT
+)
+BEGIN
+    SELECT
+        doctor_id, 
+        COUNT(patient_id) AS patients_seen
+    FROM
+        appointment
+    WHERE
+        YEAR(appointment_time) = input_year
+    GROUP BY
+        doctor_id
+    ORDER BY
+        patients_seen DESC
+    LIMIT 1;
+END $
+
+DELIMITER ;
+```
+
+#### Usage
+
+```sql
+CALL GetDoctorWithMostPatientsByYear(2025);
+```
+
+#### Output Columns
+
+| Column          | Description                                              |
+|-----------------|----------------------------------------------------------|
+| `doctor_id`     | The ID of the doctor with the highest patient count      |
+| `patients_seen` | Total number of appointments (patients seen) that year   |
+
+#### Notes
+- Accepts one `IN` parameter: `input_year` (e.g., `2025`).
+- Uses `YEAR()` to filter all appointments within the specified year.
+- `GROUP BY doctor_id` aggregates counts per doctor; `ORDER BY patients_seen DESC LIMIT 1` returns only the busiest doctor.
+- Identical in structure to `GetDoctorWithMostPatientsByMonth` but scoped to a full year instead of a single month.
+- Returns only `doctor_id` — join with the `doctor` table to retrieve the doctor's name if needed.
