@@ -62,16 +62,15 @@
     width: 90%;
     margin-bottom: 40px;
   }
-  
   .confirm-booking {
     padding: 10px 20px;
     background: #1c3745;
     color: #fff;
     border: none;
+    border-radius: 8px;
     cursor: pointer;
-    
-  
-    
+    font-size: 15px;
+    transition: filter 0.2s ease;
   }
   .confirm-booking:hover {
     filter: brightness(1.2);
