@@ -127,3 +127,24 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# PDF lab instruction files (local only, not part of the project source)
+*.pdf
+
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDE and editor files
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+
+# Maven build output
+app/target/
+
+# Spring Boot local config overrides
+app/src/main/resources/application-local.properties
