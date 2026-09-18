@@ -1,94 +1,342 @@
-/*this is the style sheet for the adminDashboard. */
+/* adminDashboard.css - Styles for the Admin Dashboard page */
 
-/* 
-Global Reset (`*`)
+/* ============================================================
+   Global Reset
+   ============================================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-* Purpose: Ensure consistent layout across all browsers.
-* Properties:
+/* ============================================================
+   Base: html & body
+   ============================================================ */
+html,
+body {
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
 
-  * `margin: 0` — removes default outer spacing from all elements.
-  * `padding: 0` — removes default inner spacing.
-  * `box-sizing: border-box` — ensures padding and borders are included within the total width/height of elements.
+/* ============================================================
+   Layout Wrapper
+   ============================================================ */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 
-Base HTML & Body (`html, body`)
+/* ============================================================
+   Section Heading
+   ============================================================ */
+h2 {
+  font-size: 32px;
+  font-weight: bold;
+  color: #003e3e;
+  margin-bottom: 50px;
+  text-align: center;
+}
 
-* Purpose: Establish a full-height layout and apply a standard font across the page.
-* Properties:
+/* ============================================================
+   Main Content Section
+   ============================================================ */
+.main-content {
+  flex-grow: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background-image: url('../images/defineRole/index.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
 
-  * `height: 100%` — allows containers to stretch to the full viewport height.
-  * `font-family: Arial, sans-serif` — applies a clean, readable sans-serif font.
+/* ============================================================
+   Search Bar
+   ============================================================ */
+#searchBar {
+  width: 100%;
+  max-width: 500px;
+  padding: 10px 16px;
+  border: 1px solid #cccccc;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: Arial, sans-serif;
+  outline: none;
+  margin-bottom: 20px;
+  transition: border-color 0.2s ease;
+}
 
-Main Layout Wrapper (`.wrapper`)
+#searchBar:focus {
+  border-color: #015c5d;
+  box-shadow: 0 0 0 2px rgba(1, 92, 93, 0.2);
+}
 
-* Purpose: Create a flexible, vertical layout that fills the entire screen.
-* Properties:
+/* ============================================================
+   Filter Dropdowns
+   ============================================================ */
+.filters {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 30px;
+}
 
-  * `display: flex` — enables flexbox for layout control.
-  * `flex-direction: column` — stacks children vertically.
-  * `min-height: 100vh` — ensures the wrapper always covers full screen height.
+.filters select {
+  padding: 10px 14px;
+  border: 1px solid #cccccc;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: Arial, sans-serif;
+  background-color: #ffffff;
+  cursor: pointer;
+  outline: none;
+  min-width: 180px;
+  transition: border-color 0.2s ease;
+}
 
-Section Heading (`h2`)
+.filters select:focus {
+  border-color: #015c5d;
+  box-shadow: 0 0 0 2px rgba(1, 92, 93, 0.2);
+}
 
-* Purpose: Style the headings prominently for section separation.
-* Properties:
+/* ============================================================
+   Primary Button
+   ============================================================ */
+button {
+  background-color: #A62B1F;
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 20px;
+  margin-top: 20px;
+  width: 200px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  transition: background-color 0.2s ease;
+}
 
-  * `font-size: 32px` — makes the heading large and noticeable.
-  * `font-weight: bold` — emphasizes text.
-  * `margin-bottom: 50px` — creates space below the heading.
-  * `color: #003e3e` — uses a strong teal for visual anchoring.
+button:hover {
+  background-color: #A62B1F;
+}
 
-Main Content Section (`.main-content`)
+/* ============================================================
+   Admin Button
+   ============================================================ */
+.adminBtn {
+  background-color: #f4f4f4;
+  color: #333333;
+  font-weight: bold;
+  width: 110px;
+  padding: 10px 0;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 0;
+  transition: color 0.2s ease;
+}
 
-* Purpose: Layout the main content with padding and a background image.
-* Properties:
+.adminBtn:hover {
+  color: #A62B1F;
+  background-color: #f4f4f4;
+}
 
-  * `flex-grow: 1` — lets the content fill the available vertical space.
-  * `padding: 40px` — adds internal spacing around content.
-  * `display: flex` and `flex-direction: column` — organizes content in a vertical stack.
-  * `text-align: center` — centers the text.
-  * `background-image: url("index.png")` — sets a full-screen dashboard background.
-  * `background-size: cover` — ensures the image covers the whole section.
-  * `background-position: center` — centers the image.
-  * `background-repeat: no-repeat` — avoids tiling the image.
-  * `background-attachment: fixed` — fixes the image while scrolling.
+/* ============================================================
+   Add Doctor / General Action Button
+   ============================================================ */
+.add-doctor-btn {
+  background-color: #015c5d;
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 15px;
+  width: auto;
+  margin-top: 0;
+  transition: background-color 0.2s ease;
+}
 
-Primary Button (`button`)
+.add-doctor-btn:hover {
+  background-color: #003e3e;
+}
 
-* Purpose: Design prominent, interactive buttons for main actions.
+/* ============================================================
+   Doctor Cards Content Area
+   ============================================================ */
+#content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  width: 100%;
+  margin-top: 10px;
+}
 
-* Properties:
+/* Individual Doctor Card */
+.doctor-card {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 20px;
+  width: 260px;
+  text-align: left;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.2s ease;
+}
 
-  * `background-color: #A62B1F` — sets a bold red color.
-  * `color: white` — makes text stand out.
-  * `border: none` — removes any outline/border.
-  * `border-radius: 12px` — creates rounded corners.
-  * `padding: 10px 20px` — gives space inside the button.
-  * `margin-top: 20px` — adds spacing above the button.
-  * `width: 200px` — ensures consistent button width.
-  * `cursor: pointer` — shows a hand icon on hover.
-  * `font-size: 16px` — makes the text readable.
+.doctor-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
+}
 
-* On Hover:
+.doctor-card h3 {
+  font-size: 18px;
+  color: #003e3e;
+  margin-bottom: 8px;
+}
 
-  * Retains the same red background to maintain branding.
+.doctor-card p {
+  font-size: 14px;
+  color: #555555;
+  margin-bottom: 6px;
+}
 
-Admin Button (`.adminBtn`)
+.doctor-card .card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
 
-* Purpose: Provide a secondary button style for admin-specific actions.
+.doctor-card .card-actions button {
+  width: auto;
+  padding: 8px 14px;
+  font-size: 13px;
+  margin-top: 0;
+  border-radius: 8px;
+}
 
-* Properties:
+/* ============================================================
+   Modal
+   ============================================================ */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  transition: opacity 0.3s ease;
+}
 
-  * `background-color: #f4f4f4` — uses a light grey background.
-  * `color: #333` — uses dark text for contrast.
-  * `font-weight: bold` — emphasizes text.
-  * `width: 110px` — smaller, compact width.
-  * `padding: 10px 0` — vertical padding only.
-  * `border: none` — clean look.
-  * `cursor: pointer` — indicates it's clickable.
+.modal.active {
+  display: flex;
+}
 
-* On Hover**:
+#modal-body {
+  background-color: #ffffff;
+  padding: 32px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
 
-   Changes text color to `#A62B1F` for brand consistency while keeping the background same.
+/* Close Button */
+.close {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  font-size: 26px;
+  cursor: pointer;
+  color: #333333;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
 
+.close:hover {
+  color: #A62B1F;
+}
 
-*/
+/* Modal Form Inputs */
+#modal-body input,
+#modal-body select,
+#modal-body textarea {
+  width: 100%;
+  padding: 10px 14px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #cccccc;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+#modal-body input:focus,
+#modal-body select:focus,
+#modal-body textarea:focus {
+  border-color: #015c5d;
+  box-shadow: 0 0 0 2px rgba(1, 92, 93, 0.2);
+}
+
+#modal-body label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333333;
+  display: block;
+}
+
+#modal-body button[type="submit"] {
+  background-color: #015c5d;
+  color: #ffffff;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background-color 0.2s ease;
+}
+
+#modal-body button[type="submit"]:hover {
+  background-color: #003e3e;
+}
+
+/* ============================================================
+   Responsive: smaller screens
+   ============================================================ */
+@media (max-width: 600px) {
+  .filters {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .doctor-card {
+    width: 100%;
+    max-width: 360px;
+  }
+
+  #searchBar {
+    max-width: 100%;
+  }
+}
