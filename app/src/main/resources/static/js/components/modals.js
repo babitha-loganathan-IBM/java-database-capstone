@@ -1,4 +1,7 @@
 // modals.js
+import { patientSignup } from '../services/patientServices.js';
+import { patientLogin } from '../services/patientServices.js';
+
 export function openModal(type) {
   let modalContent = '';
   if (type === 'addDoctor') {
@@ -80,11 +83,37 @@ export function openModal(type) {
   };
 
   if (type === "patientSignup") {
-    document.getElementById("signupBtn").addEventListener("click", () => window.signupPatient());
+    document.getElementById("signupBtn").addEventListener("click", async () => {
+      const name     = document.getElementById("name").value;
+      const email    = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const phone    = document.getElementById("phone").value;
+      const address  = document.getElementById("address").value;
+      const { success, message } = await patientSignup({ name, email, password, phone, address });
+      if (success) {
+        alert(message);
+        document.getElementById("modal").style.display = "none";
+        window.location.reload();
+      } else {
+        alert(message);
+      }
+    });
   }
 
   if (type === "patientLogin") {
-    document.getElementById("loginBtn").addEventListener("click", () => window.loginPatient());
+    document.getElementById("loginBtn").addEventListener("click", async () => {
+      const email    = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const response = await patientLogin({ identifier: email, password });
+      if (response.ok) {
+        const result = await response.json();
+        localStorage.setItem("userRole", "loggedPatient");
+        localStorage.setItem("token", result.token);
+        window.location.href = "/pages/loggedPatientDashboard.html";
+      } else {
+        alert("❌ Invalid credentials!");
+      }
+    });
   }
 
   if (type === 'addDoctor') {
