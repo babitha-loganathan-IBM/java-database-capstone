@@ -89,10 +89,10 @@ function logout() {
   window.location.href = "/";
 }
 
-// Logout for patient: clears token and redirects to patient dashboard
+// Logout for patient: clears token, retains role as "patient" to show Login/Sign Up again
 function logoutPatient() {
   localStorage.removeItem("token");
-  localStorage.removeItem("userRole");
+  localStorage.setItem("userRole", "patient");
   window.location.href = "/pages/patientDashboard.html";
 }
 
