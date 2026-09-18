@@ -20,6 +20,9 @@
   <!-- Layout Component Scripts -->
   <script th:src="@{/js/components/header.js}" defer></script>
   <script th:src="@{/js/components/footer.js}" defer></script>
+
+  <!-- Modals module: must load before any button click calls window.openModal -->
+  <script type="module" th:src="@{/js/components/modals.js}"></script>
 </head>
 
 <body>
@@ -42,14 +45,14 @@
         <!-- Filter Section -->
         <div class="filters">
           <!-- Filter by Time -->
-          <select id="timeFilter">
+          <select id="filterTime">
             <option value="">Sort by Time</option>
             <option value="AM">AM</option>
             <option value="PM">PM</option>
           </select>
 
           <!-- Filter by Specialty -->
-          <select id="specialtyFilter">
+          <select id="filterSpecialty">
             <option value="">Filter by Specialty</option>
             <option value="Cardiologist">Cardiologist</option>
             <option value="Dentist">Dentist</option>
@@ -74,14 +77,15 @@
   </div>
 
   <!-- Modal for Adding New Doctor (hidden by default) -->
-  <div id="modal" class="modal">
-    <span id="closeModal" class="close">&times;</span>
-    <div id="modal-body"></div>
+  <div id="modal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <span id="closeModal" class="close">&times;</span>
+      <div id="modal-body"></div>
+    </div>
   </div>
 
-  <!-- Page-specific module scripts -->
-  <script type="module" th:src="@{/js/services/adminDashboard.js}" defer></script>
-  <script type="module" th:src="@{/js/components/doctorCard.js}" defer></script>
+  <!-- Page-specific module script -->
+  <script type="module" th:src="@{/js/adminDashboard.js}" defer></script>
 
 </body>
 

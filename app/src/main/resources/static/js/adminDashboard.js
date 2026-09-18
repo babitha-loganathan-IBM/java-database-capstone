@@ -1,21 +1,21 @@
-import { openModal } from "./components/modals.js";
 import { getDoctors, filterDoctors, saveDoctor } from "./services/doctorServices.js";
 import { createDoctorCard } from "./components/doctorCard.js";
 
-// "Add Doctor" button opens the modal
-document.getElementById("addDocBtn").addEventListener("click", () => {
-  openModal("addDoctor");
-});
-
-// Load all doctor cards on page load
+// Load doctor cards and wire filter/search listeners after DOM is ready
 document.addEventListener("DOMContentLoaded", () => {
   loadDoctorCards();
-});
 
-// Attach filter/search listeners
-document.getElementById("searchBar").addEventListener("input", filterDoctorsOnChange);
-document.getElementById("filterTime").addEventListener("change", filterDoctorsOnChange);
-document.getElementById("filterSpecialty").addEventListener("change", filterDoctorsOnChange);
+  // #addDocBtn is injected by header.js — use event delegation on document
+  document.addEventListener("click", (e) => {
+    if (e.target && e.target.id === "addDocBtn") {
+      window.openModal && window.openModal("addDoctor");
+    }
+  });
+
+  document.getElementById("searchBar").addEventListener("input", filterDoctorsOnChange);
+  document.getElementById("filterTime").addEventListener("change", filterDoctorsOnChange);
+  document.getElementById("filterSpecialty").addEventListener("change", filterDoctorsOnChange);
+});
 
 async function loadDoctorCards() {
   try {
@@ -80,7 +80,7 @@ window.adminAddDoctor = async function () {
     return;
   }
 
-  const doctor = { name, email, phone, password, specialization, availableTimes };
+  const doctor = { name, email, phone, password, specialty: specialization, availableTimes };
 
   const result = await saveDoctor(doctor, token);
 
