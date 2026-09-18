@@ -153,3 +153,68 @@ Stores prescription records issued by doctors during appointments. Each document
 - Nested `pharmacy` and `followUp` objects are embedded because they are tightly scoped to this prescription and do not need to be queried independently.
 - `tags` array allows flexible categorization without requiring schema migrations as new drug types are introduced.
 - If the schema needs to evolve (e.g., adding `sideEffects` or `insuranceClaim`), new fields can be added to new documents without altering existing ones — a key advantage of MongoDB over rigid SQL schemas.
+
+---
+
+## MySQL Stored Procedures
+
+Stored procedures encapsulate reusable SQL logic for reporting and operational tasks. They are called directly from the MySQL CLI or a database client.
+
+---
+
+### Procedure: GetDailyAppointmentReportByDoctor
+
+Generates a daily appointment report grouped by doctor. For a given date, it returns every appointment with the doctor's name, appointment time, status, and the patient's name and phone number. This is useful for daily operational reviews in the clinic.
+
+#### Definition
+
+```sql
+DELIMITER $
+
+CREATE PROCEDURE GetDailyAppointmentReportByDoctor(
+    IN report_date DATE
+)
+BEGIN
+    SELECT 
+        d.name AS doctor_name,
+        a.appointment_time,
+        a.status,
+        p.name AS patient_name,
+        p.phone AS patient_phone
+    FROM 
+        appointment a
+    JOIN 
+        doctor d ON a.doctor_id = d.id
+    JOIN 
+        patient p ON a.patient_id = p.id
+    WHERE 
+        DATE(a.appointment_time) = report_date
+    ORDER BY 
+        d.name, a.appointment_time;
+END$
+
+DELIMITER ;
+```
+
+#### Usage
+
+```sql
+CALL GetDailyAppointmentReportByDoctor('2025-04-15');
+```
+
+#### Output Columns
+
+| Column          | Source Table  | Description                                      |
+|-----------------|---------------|--------------------------------------------------|
+| `doctor_name`   | `doctor.name` | Full name of the doctor for that appointment     |
+| `appointment_time` | `appointment.appointment_time` | Scheduled date and time of the appointment |
+| `status`        | `appointment.status` | `0` = Scheduled, `1` = Completed          |
+| `patient_name`  | `patient.name` | Full name of the patient                        |
+| `patient_phone` | `patient.phone` | Patient's 10-digit contact number              |
+
+#### Notes
+- The `IN` parameter `report_date` accepts a `DATE` value (format: `YYYY-MM-DD`).
+- Results are ordered first by `doctor_name` (alphabetically), then by `appointment_time` (chronologically) — grouping all of a doctor's appointments together for easy reading.
+- `DATE(a.appointment_time)` extracts just the date portion from the `DATETIME` column to match against `report_date`.
+- Joins the `appointment`, `doctor`, and `patient` tables — all stored in MySQL and mapped to JPA entities [`Appointment.java`](app/src/main/java/com/project/back_end/models/Appointment.java), [`Doctor.java`](app/src/main/java/com/project/back_end/models/Doctor.java), and [`Patient.java`](app/src/main/java/com/project/back_end/models/Patient.java).
+- The complete terminal output from each procedure execution should be saved for assignment submission.
